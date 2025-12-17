@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --main-red: #ff0000; --bg-black: #050505; }
-        
         body {
             margin: 0; font-family: 'Segoe UI', sans-serif;
             background: var(--bg-black); color: white;
@@ -15,206 +14,143 @@
             height: 100vh; overflow: hidden;
             background-image: radial-gradient(circle at center, #2a0000 0%, #050505 100%);
         }
-
         .main-container {
-            width: 95%; max-width: 850px; height: 480px;
+            width: 95%; max-width: 850px; height: 500px;
             display: flex; border: 1px solid rgba(255, 0, 0, 0.4);
             background: rgba(10, 10, 10, 0.95); box-shadow: 0 0 40px rgba(255, 0, 0, 0.3);
             border-radius: 8px; position: relative;
         }
 
-        /* Sidebar trái */
-        .sidebar {
-            width: 160px; border-right: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex; flex-direction: column; background: rgba(0,0,0,0.3);
-        }
-        .nav-item {
-            padding: 18px 15px; font-size: 12px; color: #777;
-            cursor: pointer; transition: 0.2s; text-transform: uppercase;
-            display: flex; align-items: center; gap: 10px;
-        }
-        .nav-item:hover { color: #fff; background: rgba(255,0,0,0.05); }
-        .nav-item.active {
-            color: var(--main-red); background: rgba(255, 0, 0, 0.1);
-            border-left: 4px solid var(--main-red); font-weight: bold;
-        }
+        /* Sidebar */
+        .sidebar { width: 160px; border-right: 1px solid rgba(255, 255, 255, 0.1); display: flex; flex-direction: column; background: rgba(0,0,0,0.3); }
+        .nav-item { padding: 18px 15px; font-size: 12px; color: #777; cursor: pointer; transition: 0.2s; text-transform: uppercase; display: flex; align-items: center; gap: 10px; }
+        .nav-item.active { color: var(--main-red); background: rgba(255, 0, 0, 0.1); border-left: 4px solid var(--main-red); font-weight: bold; }
 
-        /* Nội dung chính */
-        .content { flex: 1; padding: 25px; position: relative; overflow-y: auto; }
-        
-        .logo-area { text-align: center; margin-bottom: 25px; }
-        .logo-area h1 { 
-            font-size: 42px; color: var(--main-red); margin: 0; 
-            text-shadow: 0 0 20px var(--main-red); font-style: italic; letter-spacing: 2px;
-        }
+        /* Content Area */
+        .content { flex: 1; padding: 25px; position: relative; overflow-y: auto; display: none; }
+        .content.active { display: block; animation: fadeIn 0.3s; }
+        @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
 
+        .logo-area { text-align: center; margin-bottom: 20px; }
+        .logo-area h1 { font-size: 38px; color: var(--main-red); margin: 0; text-shadow: 0 0 20px var(--main-red); font-style: italic; }
+
+        /* Dashboard Widgets */
+        .db-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 10px; }
+        .widget { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,0,0,0.2); padding: 15px; border-radius: 8px; text-align: center; }
+        .widget i { font-size: 20px; color: var(--main-red); margin-bottom: 10px; }
+        .widget div { font-size: 11px; color: #888; text-transform: uppercase; }
+        .widget span { font-size: 16px; font-weight: bold; display: block; margin-top: 5px; }
+
+        .news-card { background: rgba(255,0,0,0.05); border-left: 4px solid var(--main-red); padding: 15px; margin-top: 20px; border-radius: 0 8px 8px 0; }
+        .news-card h3 { margin: 0 0 10px 0; font-size: 14px; color: var(--main-red); }
+        .news-card p { margin: 0; font-size: 12px; color: #bbb; line-height: 1.5; }
+
+        /* Home Tab Styles (Giữ nguyên từ code trước) */
         .grid-layout { display: grid; grid-template-columns: 1fr 1.2fr; gap: 20px; }
-
-        /* Card Menu */
-        .card {
-            background: rgba(20, 20, 20, 0.8); border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 20px; border-radius: 10px; box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
-        }
-
-        .status-header { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 13px; }
-        #stat-text { color: var(--main-red); font-weight: bold; }
-
-        input {
-            width: 100%; background: #000; border: 1px solid #333;
-            color: white; padding: 12px; border-radius: 5px; margin-bottom: 15px;
-            box-sizing: border-box; outline: none; transition: 0.3s;
-        }
-        input:focus { border-color: var(--main-red); box-shadow: 0 0 10px rgba(255,0,0,0.2); }
-
-        .btn-active {
-            width: 100%; padding: 12px; background: var(--main-red);
-            border: none; border-radius: 5px; color: white;
-            font-weight: bold; cursor: pointer; text-transform: uppercase;
-            box-shadow: 0 4px 15px rgba(255,0,0,0.3);
-        }
-        .btn-active:active { transform: scale(0.98); }
-
-        /* Danh sách chức năng */
-        .feature-item {
-            display: flex; justify-content: space-between; align-items: center;
-            background: rgba(255, 255, 255, 0.03); padding: 10px 15px; 
-            border-radius: 6px; margin-bottom: 8px; border: 1px solid transparent;
-        }
-        .feature-item:hover { border-color: rgba(255,0,0,0.2); }
-        .feature-item span { font-size: 13px; display: flex; align-items: center; gap: 10px; }
-
-        /* Switch Toggle */
-        .switch { width: 38px; height: 20px; position: relative; display: inline-block; }
+        .card { background: rgba(20, 20, 20, 0.8); border: 1px solid rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 10px; }
+        input { width: 100%; background: #000; border: 1px solid #333; color: white; padding: 12px; border-radius: 5px; margin-bottom: 15px; box-sizing: border-box; }
+        .btn-active { width: 100%; padding: 12px; background: var(--main-red); border: none; border-radius: 5px; color: white; font-weight: bold; cursor: pointer; }
+        .feature-item { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.03); padding: 10px 15px; border-radius: 6px; margin-bottom: 8px; font-size: 13px; }
+        
+        /* Toggle Switch */
+        .switch { width: 34px; height: 18px; position: relative; display: inline-block; }
         .switch input { opacity: 0; width: 0; height: 0; }
-        .slider {
-            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #222; transition: .4s; border-radius: 20px;
-        }
-        .slider:before {
-            position: absolute; content: ""; height: 14px; width: 14px;
-            left: 3px; bottom: 3px; background-color: #888; transition: .4s; border-radius: 50%;
-        }
-        input:checked + .slider { background-color: var(--main-red); box-shadow: 0 0 10px var(--main-red); }
-        input:checked + .slider:before { transform: translateX(18px); background-color: white; }
-
-        .inject-btn {
-            width: 100%; margin-top: 10px; padding: 10px;
-            background: transparent; border: 1px solid var(--main-red);
-            color: var(--main-red); border-radius: 5px; font-weight: bold; cursor: pointer;
-        }
-
-        .version { position: absolute; bottom: 10px; right: 20px; font-size: 10px; color: #444; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #222; transition: .4s; border-radius: 20px; }
+        .slider:before { position: absolute; content: ""; height: 12px; width: 12px; left: 3px; bottom: 3px; background-color: #888; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--main-red); }
+        input:checked + .slider:before { transform: translateX(16px); background-color: white; }
     </style>
 </head>
 <body>
 
 <div class="main-container">
     <div class="sidebar">
-        <div class="nav-item" onclick="showTab('dashboard')"><i class="fas fa-th-large"></i> Dashboard</div>
-        <div class="nav-item active" onclick="showTab('home')"><i class="fas fa-home"></i> Home</div>
+        <div class="nav-item" id="btn-dashboard" onclick="showTab('dashboard')"><i class="fas fa-th-large"></i> Dashboard</div>
+        <div class="nav-item active" id="btn-home" onclick="showTab('home')"><i class="fas fa-home"></i> Home</div>
         <div class="nav-item" onclick="showTab('injector')"><i class="fas fa-syringe"></i> Injector</div>
         <div class="nav-item" onclick="showTab('mods')"><i class="fas fa-cube"></i> Mods</div>
-        <div class="nav-item" onclick="showTab('settings')"><i class="fas fa-user-shield"></i> Security</div>
         <div class="nav-item" onclick="showTab('settings')"><i class="fas fa-cog"></i> Settings</div>
-        
-        <div style="margin-top: auto; padding: 20px; font-size: 11px; color: var(--main-red); text-align: center;">
-            <i class="fas fa-key"></i> VNCHEAT SYSTEM
+        <div style="margin-top: auto; padding: 20px; font-size: 10px; color: var(--main-red); text-align: center;">VNCHEAT v2.5.0</div>
+    </div>
+
+    <div id="dashboard" class="content">
+        <div class="logo-area"><h1>DASHBOARD</h1></div>
+        <div class="db-grid">
+            <div class="widget">
+                <i class="fas fa-user"></i>
+                <div>Người dùng</div>
+                <span id="user-type">Guest</span>
+            </div>
+            <div class="widget">
+                <i class="fas fa-clock"></i>
+                <div>Hết hạn</div>
+                <span id="expiry-time">N/A</span>
+            </div>
+            <div class="widget">
+                <i class="fas fa-shield-alt"></i>
+                <div>Hệ thống</div>
+                <span style="color: #00ff00;">Safe</span>
+            </div>
+        </div>
+        <div class="news-card">
+            <h3>THÔNG BÁO TỪ VNCHEAT</h3>
+            <p>- Cập nhật Anti-ban mới nhất ngày 17/12/2025.<br>
+               - Hãy bật Bypass trước khi vào trận đấu.<br>
+               - Liên hệ Telegram @VncheatSupport để mua Key VIP.</p>
         </div>
     </div>
 
-    <div class="content" id="main-content">
-        <div class="logo-area">
-            <h1>VNCHEAT</h1>
-            <div style="font-size: 10px; letter-spacing: 4px; color: #666;">PREMIUM PANEL SYSTEM</div>
-        </div>
-
+    <div id="home" class="content active">
+        <div class="logo-area"><h1>VNCHEAT</h1></div>
         <div class="grid-layout">
             <div class="card">
-                <div class="status-header">
-                    <span>STATUS:</span>
-                    <span id="stat-text">NOT ACTIVE ●</span>
-                </div>
-                <input type="text" id="key-input" placeholder="ENTER YOUR LICENSE KEY">
+                <div style="margin-bottom:15px; font-size:12px;">STATUS: <span id="stat-text" style="color:red">NOT ACTIVE</span></div>
+                <input type="text" id="key-input" placeholder="ENTER LICENSE KEY">
                 <button class="btn-active" onclick="activate()">ACTIVE KEY</button>
-                <p id="msg" style="font-size: 11px; margin-top: 15px; color: #444; text-align: center;">
-                    Waiting for license authentication...
-                </p>
             </div>
-
             <div class="card">
-                <div class="feature-list">
-                    <div class="feature-item">
-                        <span><i class="fas fa-crosshairs" style="color:var(--main-red)"></i> Aimbot 100%</span>
-                        <label class="switch"><input type="checkbox" class="func"><span class="slider"></span></label>
-                    </div>
-                    <div class="feature-item">
-                        <span><i class="fas fa-bullseye" style="color:var(--main-red)"></i> Auto Headshot</span>
-                        <label class="switch"><input type="checkbox" class="func"><span class="slider"></span></label>
-                    </div>
-                    <div class="feature-item">
-                        <span><i class="fas fa-eye" style="color:var(--main-red)"></i> Antenna Hack</span>
-                        <label class="switch"><input type="checkbox" class="func"><span class="slider"></span></label>
-                    </div>
-                    <div class="feature-item">
-                        <span><i class="fas fa-wind" style="color:var(--main-red)"></i> Speed Run</span>
-                        <label class="switch"><input type="checkbox" class="func"><span class="slider"></span></label>
-                    </div>
-                    <div class="feature-item">
-                        <span><i class="fas fa-shield-alt" style="color:var(--main-red)"></i> Anti-Ban Bypass</span>
-                        <label class="switch"><input type="checkbox" class="func"><span class="slider"></span></label>
-                    </div>
-                </div>
-                <button class="inject-btn" onclick="inject()">START INJECTION</button>
+                <div class="feature-item"><span>Aimbot 100%</span> <label class="switch"><input type="checkbox" class="func"><span class="slider"></span></label></div>
+                <div class="feature-item"><span>Auto Headshot</span> <label class="switch"><input type="checkbox" class="func"><span class="slider"></span></label></div>
+                <div class="feature-item"><span>Antenna Hack</span> <label class="switch"><input type="checkbox" class="func"><span class="slider"></span></label></div>
+                <button class="btn-active" style="margin-top:10px; background:transparent; border:1px solid var(--main-red); color:var(--main-red)" onclick="alert('Đang Inject...')">INJECT NOW</button>
             </div>
-        </div>
-
-        <div class="version">
-            VNCHEAT MOBILE | Version 2.5.0<br>
-            Protected by CloudGuard Secure
         </div>
     </div>
 </div>
 
 <script>
-    // Khóa chức năng khi chưa active
-    const toggles = document.querySelectorAll('.func');
-    toggles.forEach(t => t.disabled = true);
+    function showTab(tabId) {
+        // Ẩn tất cả tab
+        document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        
+        // Hiện tab được chọn
+        document.getElementById(tabId).classList.add('active');
+        document.getElementById('btn-' + tabId).classList.add('active');
+    }
 
     function activate() {
         const key = document.getElementById('key-input').value;
-        const statusText = document.getElementById('stat-text');
-        const msg = document.getElementById('msg');
-
         if(key.includes("VNCHEAT-")) {
-            statusText.innerText = "ACTIVE SUCCESS ●";
-            statusText.style.color = "#00ff00";
-            statusText.style.textShadow = "0 0 10px #00ff00";
+            document.getElementById('stat-text').innerText = "ACTIVE SUCCESS";
+            document.getElementById('stat-text').style.color = "#00ff00";
             
-            msg.innerText = "AUTHENTICATION SUCCESSFUL! WELCOME USER.";
-            msg.style.color = "#00ff00";
+            // Cập nhật thông tin bên Dashboard
+            document.getElementById('user-type').innerText = "Premium";
+            document.getElementById('user-type').style.color = "#00ff00";
+            document.getElementById('expiry-time').innerText = "30 Days";
             
-            toggles.forEach(t => t.disabled = false);
-            alert("Kích hoạt Vncheat thành công!");
+            document.querySelectorAll('.func').forEach(t => t.disabled = false);
+            alert("Kích hoạt Premium thành công!");
         } else {
-            alert("Key không hợp lệ! Vui lòng kiểm tra lại.");
+            alert("Key không hợp lệ!");
         }
-    }
-
-    function inject() {
-        const isActive = document.getElementById('stat-text').innerText.includes("SUCCESS");
-        if(!isActive) {
-            alert("Vui lòng Active Key trước khi Inject!");
-        } else {
-            alert("Đang Inject dữ liệu vào Free Fire... Vui lòng không thoát App.");
-        }
-    }
-
-    function showTab(tabName) {
-        // Code chuyển tab có thể phát triển thêm ở đây
-        alert("Tính năng tab " + tabName + " đang được cập nhật!");
     }
 </script>
 
 </body>
 </html>
+
+
+
 
