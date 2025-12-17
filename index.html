@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FF PANEL PREVIEW</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-red: #ff4d4d;
+            --dark-bg: #0a0a0a;
+            --panel-bg: rgba(20, 20, 20, 0.95);
+            --border-glow: rgba(255, 77, 77, 0.3);
+        }
+
+        body {
+            margin: 0; padding: 0;
+            background-color: var(--dark-bg);
+            background-image: radial-gradient(circle at center, #2a0a0a 0%, #0a0a0a 100%);
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            color: white;
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh; overflow: hidden;
+        }
+
+        /* Container chính */
+        .panel {
+            width: 90%; max-width: 450px;
+            background: var(--panel-bg);
+            border: 1px solid var(--primary-red);
+            box-shadow: 0 0 20px var(--border-glow);
+            border-radius: 12px;
+            padding: 20px;
+            position: relative;
+        }
+
+        .header { text-align: center; margin-bottom: 25px; }
+        .header h1 { 
+            color: var(--primary-red); 
+            text-shadow: 0 0 10px var(--primary-red);
+            font-size: 28px; margin: 0; letter-spacing: 2px;
+        }
+        .status-bar { font-size: 12px; color: #888; margin-top: 5px; }
+
+        /* Login Section */
+        #login-section { text-align: center; }
+        input[type="text"] {
+            width: 80%;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: white;
+            padding: 12px;
+            border-radius: 5px;
+            outline: none;
+            transition: 0.3s;
+            margin-bottom: 15px;
+        }
+        input:focus { border-color: var(--primary-red); box-shadow: 0 0 10px var(--border-glow); }
+
+        .btn {
+            background: linear-gradient(45deg, #b30000, #ff4d4d);
+            border: none; color: white;
+            padding: 10px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        /* Chức năng Menu (Mặc định ẩn) */
+        #menu-section { display: none; }
+        .feature-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid #222;
+        }
+        .feature-item span { font-size: 14px; font-weight: 500; }
+
+        /* Switch Toggle Custom */
+        .switch {
+            position: relative; display: inline-block;
+            width: 40px; height: 20px;
+        }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute; cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #333; transition: .4s; border-radius: 20px;
+        }
+        .slider:before {
+            position: absolute; content: "";
+            height: 14px; width: 14px; left: 3px; bottom: 3px;
+            background-color: white; transition: .4s; border-radius: 50%;
+        }
+        input:checked + .slider { background-color: var(--primary-red); }
+        input:checked + .slider:before { transform: translateX(20px); }
+
+        .active-success { color: #00ff00; font-weight: bold; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="panel">
+    <div class="header">
+        <h1>FF PANEL</h1>
+        <div class="status-bar" id="status-text">STATUS: <span style="color: red;">NOT ACTIVE ●</span></div>
+    </div>
+
+    <div id="login-section">
+        <input type="text" id="license-key" placeholder="NHẬP KEY TẠI ĐÂY...">
+        <br>
+        <button class="btn" onclick="checkKey()">ACTIVE KEY</button>
+    </div>
+
+    <div id="menu-section">
+        <div class="active-success">ACTIVE THÀNH CÔNG!</div>
+        
+        <div class="feature-item">
+            <span><i class="fas fa-crosshairs"></i> Aimbot Auto</span>
+            <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+        </div>
+        <div class="feature-item">
+            <span><i class="fas fa-eye"></i> Antena Wallhack</span>
+            <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+        </div>
+        <div class="feature-item">
+            <span><i class="fas fa-bolt"></i> Speed Run x5</span>
+            <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+        </div>
+        <div class="feature-item">
+            <span><i class="fas fa-skull"></i> No Recoil 100%</span>
+            <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+        </div>
+
+        <button class="btn" style="width: 100%; margin-top: 20px;" onclick="inject()">INJECT NOW</button>
+    </div>
+</div>
+
+<script>
+    function checkKey() {
+        const key = document.getElementById('license-key').value;
+        const correctKey = "FF-666"; // Bạn có thể thay đổi key này hoặc dùng API
+
+        if(key === correctKey) {
+            document.getElementById('login-section').style.display = 'none';
+            document.getElementById('menu-section').style.display = 'block';
+            document.getElementById('status-text').innerHTML = 'STATUS: <span style="color: #00ff00;">ACTIVE SUCCESS ●</span>';
+        } else {
+            alert("Key không chính xác hoặc đã hết hạn!");
+        }
+    }
+
+    function inject() {
+        alert("Đang Inject dữ liệu vào Free Fire...");
+        // Ở đây sẽ là code xử lý logic inject nếu có Tweak
+    }
+</script>
+
+</body>
+</html>
