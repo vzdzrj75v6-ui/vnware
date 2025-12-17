@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
@@ -6,97 +6,85 @@
     <title>VNCHEAT PANEL</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --main-red: #ff0000; --bg-black: #050505; }
+        :root { --main-red: #ff4d4d; --bg-black: #050505; }
+        
         body {
             margin: 0; font-family: 'Segoe UI', sans-serif;
             background: var(--bg-black); color: white;
             display: flex; justify-content: center; align-items: center;
             height: 100vh; overflow: hidden;
-            background-image: radial-gradient(circle at center, #2a0000 0%, #050505 100%);
+            background-image: radial-gradient(circle at center, #1a0000 0%, #050505 100%);
         }
+
+        /* Container nhỏ gọn, tự co giãn khi xoay ngang */
         .main-container {
-            width: 95%; max-width: 850px; height: 500px;
-            display: flex; border: 1px solid rgba(255, 0, 0, 0.4);
-            background: rgba(10, 10, 10, 0.95); box-shadow: 0 0 40px rgba(255, 0, 0, 0.3);
-            border-radius: 8px; position: relative;
+            width: 95%; max-width: 750px; height: 90vh; max-height: 400px;
+            display: flex; border: 1px solid rgba(255, 77, 77, 0.4);
+            background: rgba(10, 10, 10, 0.98); box-shadow: 0 0 30px rgba(255, 77, 77, 0.2);
+            border-radius: 12px; overflow: hidden;
         }
 
-        /* Sidebar */
-        .sidebar { width: 160px; border-right: 1px solid rgba(255, 255, 255, 0.1); display: flex; flex-direction: column; background: rgba(0,0,0,0.3); }
-        .nav-item { padding: 18px 15px; font-size: 12px; color: #777; cursor: pointer; transition: 0.2s; text-transform: uppercase; display: flex; align-items: center; gap: 10px; }
-        .nav-item.active { color: var(--main-red); background: rgba(255, 0, 0, 0.1); border-left: 4px solid var(--main-red); font-weight: bold; }
+        /* Sidebar hẹp hơn để nhường chỗ cho nội dung khi xoay ngang */
+        .sidebar { width: 140px; border-right: 1px solid rgba(255, 255, 255, 0.05); display: flex; flex-direction: column; background: rgba(0,0,0,0.5); }
+        .nav-item { padding: 12px 10px; font-size: 11px; color: #666; cursor: pointer; transition: 0.2s; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+        .nav-item.active { color: var(--main-red); background: rgba(255, 77, 77, 0.1); border-left: 3px solid var(--main-red); font-weight: bold; }
 
-        /* Content Area */
-        .content { flex: 1; padding: 25px; position: relative; overflow-y: auto; display: none; }
+        .content { flex: 1; padding: 15px; display: none; overflow-y: auto; position: relative; }
         .content.active { display: block; animation: fadeIn 0.3s; }
         @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
 
-        .logo-area { text-align: center; margin-bottom: 20px; }
-        .logo-area h1 { font-size: 38px; color: var(--main-red); margin: 0; text-shadow: 0 0 20px var(--main-red); font-style: italic; }
+        .logo-area h1 { font-size: 28px; color: var(--main-red); margin: 0; text-shadow: 0 0 15px var(--main-red); font-style: italic; text-align: center; }
 
-        /* Dashboard Widgets */
-        .db-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 10px; }
-        .widget { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,0,0,0.2); padding: 15px; border-radius: 8px; text-align: center; }
-        .widget i { font-size: 20px; color: var(--main-red); margin-bottom: 10px; }
-        .widget div { font-size: 11px; color: #888; text-transform: uppercase; }
-        .widget span { font-size: 16px; font-weight: bold; display: block; margin-top: 5px; }
+        /* Grid layout tối ưu: 2 cột khi màn hình rộng */
+        .grid-layout { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 10px; }
+        .card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 8px; }
 
-        .news-card { background: rgba(255,0,0,0.05); border-left: 4px solid var(--main-red); padding: 15px; margin-top: 20px; border-radius: 0 8px 8px 0; }
-        .news-card h3 { margin: 0 0 10px 0; font-size: 14px; color: var(--main-red); }
-        .news-card p { margin: 0; font-size: 12px; color: #bbb; line-height: 1.5; }
+        /* Chỉnh nút bấm to ra để dễ chạm bằng ngón tay */
+        .btn-red { width: 100%; padding: 12px; background: var(--main-red); border: none; border-radius: 6px; color: white; font-weight: bold; cursor: pointer; font-size: 13px; }
+        input { width: 100%; background: #000; border: 1px solid #333; color: white; padding: 10px; border-radius: 5px; margin-bottom: 10px; box-sizing: border-box; }
 
-        /* Home Tab Styles (Giữ nguyên từ code trước) */
-        .grid-layout { display: grid; grid-template-columns: 1fr 1.2fr; gap: 20px; }
-        .card { background: rgba(20, 20, 20, 0.8); border: 1px solid rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 10px; }
-        input { width: 100%; background: #000; border: 1px solid #333; color: white; padding: 12px; border-radius: 5px; margin-bottom: 15px; box-sizing: border-box; }
-        .btn-active { width: 100%; padding: 12px; background: var(--main-red); border: none; border-radius: 5px; color: white; font-weight: bold; cursor: pointer; }
-        .feature-item { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.03); padding: 10px 15px; border-radius: 6px; margin-bottom: 8px; font-size: 13px; }
-        
-        /* Toggle Switch */
-        .switch { width: 34px; height: 18px; position: relative; display: inline-block; }
+        .feature-item { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); padding: 10px; border-radius: 6px; margin-bottom: 5px; font-size: 12px; }
+
+        /* Toggle Switch to hơn để dễ bấm */
+        .switch { width: 44px; height: 22px; position: relative; display: inline-block; }
         .switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #222; transition: .4s; border-radius: 20px; }
-        .slider:before { position: absolute; content: ""; height: 12px; width: 12px; left: 3px; bottom: 3px; background-color: #888; transition: .4s; border-radius: 50%; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #333; transition: .4s; border-radius: 22px; }
+        .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; background-color: #888; transition: .4s; border-radius: 50%; }
         input:checked + .slider { background-color: var(--main-red); }
-        input:checked + .slider:before { transform: translateX(16px); background-color: white; }
+        input:checked + .slider:before { transform: translateX(22px); background-color: white; }
+
+        /* Dashboard widgets nhỏ lại */
+        .db-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .widget { background: rgba(255,77,77,0.05); padding: 10px; border-radius: 6px; text-align: center; font-size: 10px; border: 1px solid rgba(255,77,77,0.1); }
+        .widget span { display: block; font-size: 12px; font-weight: bold; color: var(--main-red); }
+
+        /* Ẩn bớt logo khi xoay ngang quá thấp */
+        @media (max-height: 350px) {
+            .logo-area { display: none; }
+            .main-container { height: 98vh; }
+        }
     </style>
 </head>
 <body>
 
 <div class="main-container">
     <div class="sidebar">
-        <div class="nav-item" id="btn-dashboard" onclick="showTab('dashboard')"><i class="fas fa-th-large"></i> Dashboard</div>
-        <div class="nav-item active" id="btn-home" onclick="showTab('home')"><i class="fas fa-home"></i> Home</div>
-        <div class="nav-item" onclick="showTab('injector')"><i class="fas fa-syringe"></i> Injector</div>
-        <div class="nav-item" onclick="showTab('mods')"><i class="fas fa-cube"></i> Mods</div>
-        <div class="nav-item" onclick="showTab('settings')"><i class="fas fa-cog"></i> Settings</div>
-        <div style="margin-top: auto; padding: 20px; font-size: 10px; color: var(--main-red); text-align: center;">VNCHEAT v2.5.0</div>
+        <div class="nav-item" id="nav-dashboard" onclick="showTab('dashboard')"><i class="fas fa-chart-bar"></i> Dash</div>
+        <div class="nav-item active" id="nav-home" onclick="showTab('home')"><i class="fas fa-home"></i> Home</div>
+        <div class="nav-item" id="nav-injector" onclick="showTab('injector')"><i class="fas fa-syringe"></i> Inject</div>
+        <div class="nav-item" id="nav-mods" onclick="showTab('mods')"><i class="fas fa-cube"></i> Mods</div>
+        <div class="nav-item" id="nav-settings" onclick="showTab('settings')"><i class="fas fa-cog"></i> Sett</div>
+        <div style="margin-top: auto; padding-bottom: 10px; text-align: center; font-size: 9px; color: var(--main-red);">Vncheat</div>
     </div>
 
     <div id="dashboard" class="content">
-        <div class="logo-area"><h1>DASHBOARD</h1></div>
         <div class="db-grid">
-            <div class="widget">
-                <i class="fas fa-user"></i>
-                <div>Người dùng</div>
-                <span id="user-type">Guest</span>
-            </div>
-            <div class="widget">
-                <i class="fas fa-clock"></i>
-                <div>Hết hạn</div>
-                <span id="expiry-time">N/A</span>
-            </div>
-            <div class="widget">
-                <i class="fas fa-shield-alt"></i>
-                <div>Hệ thống</div>
-                <span style="color: #00ff00;">Safe</span>
-            </div>
+            <div class="widget">User<span id="db-user">Guest</span></div>
+            <div class="widget">Expiry<span id="db-expiry">0D</span></div>
+            <div class="widget">Status<span style="color:#00ff00">Safe</span></div>
         </div>
-        <div class="news-card">
-            <h3>THÔNG BÁO TỪ VNCHEAT</h3>
-            <p>- Cập nhật Anti-ban mới nhất ngày 17/12/2025.<br>
-               - Hãy bật Bypass trước khi vào trận đấu.<br>
-               - Liên hệ Telegram @VncheatSupport để mua Key VIP.</p>
+        <div class="card" style="margin-top:10px;">
+            <p style="font-size:11px; margin:0; color:#aaa;">News: Hệ thống đã cập nhật Anti-ban. Vui lòng bật Bypass.</p>
         </div>
     </div>
 
@@ -104,50 +92,63 @@
         <div class="logo-area"><h1>VNCHEAT</h1></div>
         <div class="grid-layout">
             <div class="card">
-                <div style="margin-bottom:15px; font-size:12px;">STATUS: <span id="stat-text" style="color:red">NOT ACTIVE</span></div>
-                <input type="text" id="key-input" placeholder="ENTER LICENSE KEY">
-                <button class="btn-active" onclick="activate()">ACTIVE KEY</button>
+                <div style="font-size:11px; margin-bottom:8px;">KEY: <span id="stat-text" style="color:red">NOT ACTIVE</span></div>
+                <input type="text" id="key-input" placeholder="Nhập Key...">
+                <button class="btn-red" onclick="activate()">ACTIVE</button>
             </div>
             <div class="card">
                 <div class="feature-item"><span>Aimbot 100%</span> <label class="switch"><input type="checkbox" class="func"><span class="slider"></span></label></div>
-                <div class="feature-item"><span>Auto Headshot</span> <label class="switch"><input type="checkbox" class="func"><span class="slider"></span></label></div>
-                <div class="feature-item"><span>Antenna Hack</span> <label class="switch"><input type="checkbox" class="func"><span class="slider"></span></label></div>
-                <button class="btn-active" style="margin-top:10px; background:transparent; border:1px solid var(--main-red); color:var(--main-red)" onclick="alert('Đang Inject...')">INJECT NOW</button>
+                <div class="feature-item"><span>Antenna</span> <label class="switch"><input type="checkbox" class="func"><span class="slider"></span></label></div>
+                <button class="btn-red" style="margin-top:8px; background:transparent; border:1px solid var(--main-red); color:var(--main-red); height:35px; padding:0;" onclick="alert('Injecting...')">INJECT</button>
             </div>
+        </div>
+    </div>
+
+    <div id="injector" class="content">
+        <div class="card">
+            <div class="feature-item"><span>Bypass Anti-Cheat</span> <label class="switch"><input type="checkbox" class="func"><span class="slider"></span></label></div>
+            <div class="feature-item"><span>Clear Log Game</span> <button class="btn-red" style="width:70px; padding:5px; font-size:10px;">CLEAR</button></div>
+        </div>
+    </div>
+
+    <div id="mods" class="content">
+        <div class="grid-layout">
+            <div class="feature-item"><span>Speed Run x5</span> <label class="switch"><input type="checkbox" class="func"><span class="slider"></span></label></div>
+            <div class="feature-item"><span>Jump Height</span> <label class="switch"><input type="checkbox" class="func"><span class="slider"></span></label></div>
+        </div>
+    </div>
+
+    <div id="settings" class="content">
+        <div class="card" style="text-align:center;">
+            <p style="font-size:12px;">VNCHEAT Version 2.5.0</p>
+            <button class="btn-red" onclick="location.reload()">RELOAD PANEL</button>
         </div>
     </div>
 </div>
 
 <script>
+    const toggles = document.querySelectorAll('.func');
+    toggles.forEach(t => t.disabled = true);
+
     function showTab(tabId) {
-        // Ẩn tất cả tab
         document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        
-        // Hiện tab được chọn
         document.getElementById(tabId).classList.add('active');
-        document.getElementById('btn-' + tabId).classList.add('active');
+        document.getElementById('nav-' + tabId).classList.add('active');
     }
 
     function activate() {
         const key = document.getElementById('key-input').value;
         if(key.includes("VNCHEAT-")) {
-            document.getElementById('stat-text').innerText = "ACTIVE SUCCESS";
+            document.getElementById('stat-text').innerText = "ACTIVE";
             document.getElementById('stat-text').style.color = "#00ff00";
-            
-            // Cập nhật thông tin bên Dashboard
-            document.getElementById('user-type').innerText = "Premium";
-            document.getElementById('user-type').style.color = "#00ff00";
-            document.getElementById('expiry-time').innerText = "30 Days";
-            
-            document.querySelectorAll('.func').forEach(t => t.disabled = false);
-            alert("Kích hoạt Premium thành công!");
-        } else {
-            alert("Key không hợp lệ!");
-        }
+            document.getElementById('db-user').innerText = "Vip";
+            document.getElementById('db-user').style.color = "#00ff00";
+            toggles.forEach(t => t.disabled = false);
+            alert("Active thành công!");
+        } else { alert("Sai Key!"); }
     }
 </script>
-
 </body>
 </html>
 
