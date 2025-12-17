@@ -1,158 +1,170 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FF PANEL PREVIEW</title>
+    <title>VNCHEAT PANEL</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root {
-            --primary-red: #ff4d4d;
-            --dark-bg: #0a0a0a;
-            --panel-bg: rgba(20, 20, 20, 0.95);
-            --border-glow: rgba(255, 77, 77, 0.3);
-        }
-
+        :root { --main-red: #ff0000; --bg-black: #050505; --glass: rgba(255, 255, 255, 0.05); }
+        
         body {
-            margin: 0; padding: 0;
-            background-color: var(--dark-bg);
-            background-image: radial-gradient(circle at center, #2a0a0a 0%, #0a0a0a 100%);
-            font-family: 'Segoe UI', Roboto, sans-serif;
-            color: white;
+            margin: 0; font-family: 'Segoe UI', sans-serif;
+            background: var(--bg-black); color: white;
             display: flex; justify-content: center; align-items: center;
             height: 100vh; overflow: hidden;
+            /* Ảnh nền hiệu ứng mạch điện - Bạn có thể thay link ảnh mạch điện đỏ tại đây */
+            background-image: url('https://www.transparenttextures.com/patterns/circuit-board.png');
+            background-color: #0a0000;
         }
 
-        /* Container chính */
-        .panel {
-            width: 90%; max-width: 450px;
-            background: var(--panel-bg);
-            border: 1px solid var(--primary-red);
-            box-shadow: 0 0 20px var(--border-glow);
-            border-radius: 12px;
-            padding: 20px;
-            position: relative;
+        .main-container {
+            width: 95%; max-width: 800px; height: 450px;
+            display: flex; border: 1px solid rgba(255, 0, 0, 0.3);
+            background: rgba(10, 10, 10, 0.9); box-shadow: 0 0 30px rgba(255, 0, 0, 0.2);
+            border-radius: 5px; position: relative;
         }
 
-        .header { text-align: center; margin-bottom: 25px; }
-        .header h1 { 
-            color: var(--primary-red); 
-            text-shadow: 0 0 10px var(--primary-red);
-            font-size: 28px; margin: 0; letter-spacing: 2px;
+        /* Sidebar bên trái */
+        .sidebar {
+            width: 150px; border-right: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex; flex-direction: column; padding: 20px 0;
         }
-        .status-bar { font-size: 12px; color: #888; margin-top: 5px; }
-
-        /* Login Section */
-        #login-section { text-align: center; }
-        input[type="text"] {
-            width: 80%;
-            background: #1a1a1a;
-            border: 1px solid #333;
-            color: white;
-            padding: 12px;
-            border-radius: 5px;
-            outline: none;
-            transition: 0.3s;
-            margin-bottom: 15px;
+        .nav-item {
+            padding: 15px 20px; font-size: 13px; color: #888;
+            cursor: pointer; transition: 0.3s; text-transform: uppercase;
         }
-        input:focus { border-color: var(--primary-red); box-shadow: 0 0 10px var(--border-glow); }
+        .nav-item.active {
+            color: var(--main-red); background: rgba(255, 0, 0, 0.1);
+            border-left: 3px solid var(--main-red);
+        }
+        .nav-item i { margin-right: 10px; }
 
+        /* Nội dung bên phải */
+        .content { flex: 1; padding: 20px; position: relative; }
+        
+        .logo-area { text-align: center; margin-bottom: 20px; }
+        .logo-area h1 { 
+            font-size: 35px; color: var(--main-red); margin: 0; 
+            text-shadow: 0 0 15px var(--main-red); font-style: italic;
+        }
+
+        .grid-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+        /* Khu vực Login/Key */
+        .card {
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px; border-radius: 8px;
+        }
+        .status-tag { font-size: 12px; margin-bottom: 10px; color: #bbb; }
+        .status-dot { color: var(--main-red); font-size: 15px; }
+
+        input {
+            width: 90%; background: #111; border: 1px solid #333;
+            color: white; padding: 10px; border-radius: 4px; margin-bottom: 15px;
+        }
+
+        .btn-group { display: flex; gap: 10px; }
         .btn {
-            background: linear-gradient(45deg, #b30000, #ff4d4d);
-            border: none; color: white;
-            padding: 10px 25px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            text-transform: uppercase;
+            flex: 1; padding: 10px; border: none; border-radius: 4px;
+            cursor: pointer; font-weight: bold; font-size: 12px;
         }
+        .btn-login { background: var(--main-red); color: white; }
+        .btn-active { background: transparent; border: 1px solid var(--main-red); color: var(--main-red); }
 
-        /* Chức năng Menu (Mặc định ẩn) */
-        #menu-section { display: none; }
+        /* Khu vực Toggle Chức năng */
+        .feature-list { display: flex; flex-direction: column; gap: 10px; }
         .feature-item {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 12px;
-            border-bottom: 1px solid #222;
+            background: rgba(255, 255, 255, 0.02); padding: 8px 12px; border-radius: 5px;
         }
-        .feature-item span { font-size: 14px; font-weight: 500; }
+        .feature-item span { font-size: 13px; color: #ddd; }
 
-        /* Switch Toggle Custom */
-        .switch {
-            position: relative; display: inline-block;
-            width: 40px; height: 20px;
-        }
+        /* Switch Toggle */
+        .switch { width: 34px; height: 18px; position: relative; display: inline-block; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider {
-            position: absolute; cursor: pointer;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #333; transition: .4s; border-radius: 20px;
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #333; transition: .4s; border-radius: 34px;
         }
         .slider:before {
-            position: absolute; content: "";
-            height: 14px; width: 14px; left: 3px; bottom: 3px;
-            background-color: white; transition: .4s; border-radius: 50%;
+            position: absolute; content: ""; height: 12px; width: 12px;
+            left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%;
         }
-        input:checked + .slider { background-color: var(--primary-red); }
-        input:checked + .slider:before { transform: translateX(20px); }
+        input:checked + .slider { background-color: var(--main-red); }
+        input:checked + .slider:before { transform: translateX(16px); }
 
-        .active-success { color: #00ff00; font-weight: bold; margin-bottom: 10px; }
+        .footer-info {
+            position: absolute; bottom: 10px; right: 20px;
+            font-size: 10px; color: #555; text-align: right;
+        }
     </style>
 </head>
 <body>
 
-<div class="panel">
-    <div class="header">
-        <h1>FF PANEL</h1>
-        <div class="status-bar" id="status-text">STATUS: <span style="color: red;">NOT ACTIVE ●</span></div>
+<div class="main-container">
+    <div class="sidebar">
+        <div class="nav-item"><i class="fas fa-star"></i> DASHBOARD</div>
+        <div class="nav-item active"><i class="fas fa-home"></i> HOME</div>
+        <div class="nav-item"><i class="fas fa-comment"></i> INJECTOR</div>
+        <div class="nav-item"><i class="fas fa-microchip"></i> MODS</div>
+        <div class="nav-item"><i class="fas fa-cog"></i> SETTINGS</div>
+        <div style="margin-top: auto; padding: 20px; font-size: 11px; color: var(--main-red);">ACTIVE KEY</div>
     </div>
 
-    <div id="login-section">
-        <input type="text" id="license-key" placeholder="NHẬP KEY TẠI ĐÂY...">
-        <br>
-        <button class="btn" onclick="checkKey()">ACTIVE KEY</button>
-    </div>
-
-    <div id="menu-section">
-        <div class="active-success">ACTIVE THÀNH CÔNG!</div>
-        
-        <div class="feature-item">
-            <span><i class="fas fa-crosshairs"></i> Aimbot Auto</span>
-            <label class="switch"><input type="checkbox"><span class="slider"></span></label>
-        </div>
-        <div class="feature-item">
-            <span><i class="fas fa-eye"></i> Antena Wallhack</span>
-            <label class="switch"><input type="checkbox"><span class="slider"></span></label>
-        </div>
-        <div class="feature-item">
-            <span><i class="fas fa-bolt"></i> Speed Run x5</span>
-            <label class="switch"><input type="checkbox"><span class="slider"></span></label>
-        </div>
-        <div class="feature-item">
-            <span><i class="fas fa-skull"></i> No Recoil 100%</span>
-            <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+    <div class="content">
+        <div class="logo-area">
+            <h1>VNCHEAT</h1>
+            <div style="font-size: 10px; letter-spacing: 3px;">BY GAMER</div>
         </div>
 
-        <button class="btn" style="width: 100%; margin-top: 20px;" onclick="inject()">INJECT NOW</button>
+        <div class="grid-layout">
+            <div class="card" id="login-box">
+                <div class="status-tag">STATUS: <span id="stat-text">NOT ACTIVE</span> <span class="status-dot">●</span></div>
+                <input type="text" id="key-input" placeholder="ENTER YOUR LICENSE KEY HERE">
+                <div class="btn-group">
+                    <button class="btn btn-login" onclick="validate()">LOGIN</button>
+                    <button class="btn btn-active">ACTIVE KEY</button>
+                </div>
+                <p id="msg" style="font-size: 11px; margin-top: 10px; color: #555;">Key status: Waiting...</p>
+            </div>
+
+            <div class="card">
+                <div class="feature-list">
+                    <div class="feature-item"><span><i class="fas fa-crosshairs"></i> Aimbot</span> <label class="switch"><input type="checkbox" class="func"><span class="slider"></span></label></div>
+                    <div class="feature-item"><span><i class="fas fa-eye"></i> Aimlock</span> <label class="switch"><input type="checkbox" class="func"><span class="slider"></span></label></div>
+                    <div class="feature-item"><span><i class="fas fa-ghost"></i> Wallhack</span> <label class="switch"><input type="checkbox" class="func"><span class="slider"></span></label></div>
+                    <div class="feature-item"><span><i class="fas fa-running"></i> Speed Hack</span> <label class="switch"><input type="checkbox" class="func"><span class="slider"></span></label></div>
+                    <div class="feature-item"><span><i class="fas fa-gun"></i> No Recoil</span> <label class="switch"><input type="checkbox" class="func"><span class="slider"></span></label></div>
+                </div>
+                <button class="btn btn-login" style="width: 100%; margin-top: 15px; background: rgba(255,0,0,0.2); border: 1px solid var(--main-red);">INJECT NOW</button>
+            </div>
+        </div>
+
+        <div class="footer-info">
+            Version: 2.0.1<br>
+            Last Update: 2025-12-17
+        </div>
     </div>
 </div>
 
 <script>
-    function checkKey() {
-        const key = document.getElementById('license-key').value;
-        const correctKey = "FF-666"; // Bạn có thể thay đổi key này hoặc dùng API
+    // Khóa các tính năng ban đầu
+    const toggles = document.querySelectorAll('.func');
+    toggles.forEach(t => t.disabled = true);
 
-        if(key === correctKey) {
-            document.getElementById('login-section').style.display = 'none';
-            document.getElementById('menu-section').style.display = 'block';
-            document.getElementById('status-text').innerHTML = 'STATUS: <span style="color: #00ff00;">ACTIVE SUCCESS ●</span>';
+    function validate() {
+        const key = document.getElementById('key-input').value;
+        if(key === "VNCHEAT-FREE") {
+            document.getElementById('stat-text').innerText = "ACTIVE SUCCESS";
+            document.getElementById('stat-text').style.color = "#00ff00";
+            document.getElementById('msg').innerText = "Key status: Premium User";
+            document.getElementById('msg').style.color = "#00ff00";
+            toggles.forEach(t => t.disabled = false);
+            alert("Đăng nhập Vncheat thành công!");
         } else {
-            alert("Key không chính xác hoặc đã hết hạn!");
+            alert("Sai Key! Vui lòng thử lại.");
         }
-    }
-
-    function inject() {
-        alert("Đang Inject dữ liệu vào Free Fire...");
-        // Ở đây sẽ là code xử lý logic inject nếu có Tweak
     }
 </script>
 
